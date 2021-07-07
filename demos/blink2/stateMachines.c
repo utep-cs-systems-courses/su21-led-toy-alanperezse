@@ -2,34 +2,42 @@
 #include "stateMachines.h"
 #include "led.h"
 
-char toggle_red()		/* always toggle! */
-{
-  red_on = !red_on;//Always changes an led */
+void toggle_red() {
+  red_on = !red_on;
+}
+
+void toggle_green() {
+  green_on = !green_on;
+}
+
+char state_machine_green() {
+  static char state = 0;
+  if(state == 5) {
+    toggle_green();
+    state++;
+    return 1;
+  }
+  else if(state == 7) {
+    toggle_green();
+    state = 0;
+    state++;
+    return 1;
+  }
+
+  state++;
+  
+  return 0;
+}
+
+char state_machine_red() {
+  red_on = 1;
   return 1;
 }
 
-char toggle_green()	/* only toggle green if red is on!  */
-{
-  green_on = !green_on;
-  return 1;			/* always changes an led */
-}
 
-
-void state_advance()		/* alternate between toggling red & green */
-{
-  static char stateRed = 0;
-  static char stateGreen = 0;
+void state_advance() {
   char changed = 0;
-  if(++stateRed == 1) {
-    toggle_red();
-    stateRed = 0;
-    changed = 1;
-  }
-  if(++stateGreen == 2) {
-    toggle_green();
-    stateGreen = 0;
-    changed = 1;
-  }
+  changed = state_machine_green() || state_machine_red();
   
   led_changed = changed;
   led_update();
