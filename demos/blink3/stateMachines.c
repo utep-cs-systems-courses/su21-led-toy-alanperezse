@@ -28,7 +28,7 @@ char state_machine_green_dim() {
 
 char state_machine_green() {
   static char superState = 0; // For seconds
-  static char state = 0; // For 1/250 seconds
+  static unsigned char state = 0; // For 1/250 seconds
   char rtn = 0;
   
   // For ON
