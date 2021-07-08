@@ -14,16 +14,15 @@ char state_machine_green_dim() {
   static char state = 1;
   char rtn = 1;
   
-  if(state == 3) {
-    green_on = 0;
-    rtn = 1;
-  } else if(state >= 8) {
+  if(state == 0) {
     green_on = 1;
-    state = 0;
+    rtn = 1;
+  } else if(state == 3) {
+    green_on = 0;
     rtn = 1;
   }
 
-  state++;
+  state = (state + 1) % 8;
   return rtn;
 }
 
@@ -31,19 +30,6 @@ char state_machine_green() {
   static char superState = 0; // For seconds
   static char state = 0; // For 1/250 seconds
   char rtn = 0;
-
-  // if in last state of the last super state, set the variables for the beginning of the next iteration
-  if(superState == 2 && state == 249) {
-    superState = 0;
-    state = 0;
-    return rtn;
-  }
-
-  // Beginning of new superstate
-  if(state == 250) {
-    superState++;
-    state = 0;
-  }
   
   // For ON
   if(superState == 0) {
@@ -64,7 +50,9 @@ char state_machine_green() {
     }
   }
 
-  state++;
+  state = (state + 1) % 250;
+  // If after incrementing state the result is 0, it indicates that a new superState iteration is in place
+  if(state == 0) superState = (superState + 1) % 3;
   return rtn;
 }
 
