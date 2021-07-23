@@ -55,6 +55,7 @@ short lengthen() {
 }
 
 short super = 0;
+
 void state_advance() {
   short move = 0;
   
@@ -72,3 +73,4 @@ void state_advance() {
 
   if(move) super = ++super % size;
 }
+
