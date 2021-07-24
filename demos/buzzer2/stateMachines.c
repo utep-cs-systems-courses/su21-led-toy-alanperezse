@@ -54,23 +54,5 @@ short lengthen() {
   return move;
 }
 
+// For state_advance
 short super = 0;
-
-void state_advance() {
-  short move = 0;
-  
-  switch(sequence[super]) {
-  case 0:
-    move = play_silence();
-    break;
-  case 1:
-    move = lengthen();
-    break;
-  default:
-    move = play_note(sequence[super]);
-    break;
-  }
-
-  if(move) super = ++super % size;
-}
-

@@ -25,6 +25,9 @@ state_advance:
 
 	cmp #2, sequence(r12)
 	jge default		;if seq[super] >= 2
+
+	mov sequence(r12), r12
+	add r12, r12			;r12 = seq[super]
 	mov jt(r12), r0		;use jump table
 case0:
 	call #play_silence
